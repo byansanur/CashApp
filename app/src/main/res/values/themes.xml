@@ -7,7 +7,7 @@
 
     <style name="Theme.CashApp" parent="Base.Theme.CashApp" />
 
-    <color name="ic_empty_color">#000000</color>
+    <color name="ic_color">#000000</color>
     <color name="grey_color">#A1A1A1</color>
     <color name="white_color">#FFF5FF</color>
 </resources>

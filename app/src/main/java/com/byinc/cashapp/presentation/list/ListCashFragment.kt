@@ -9,6 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.byinc.cashapp.base.BaseFragment
 import com.byinc.cashapp.databinding.FragmentListCashBinding
 import com.byinc.cashapp.utils.Resources
+import com.byinc.cashapp.utils.convertDate
+import com.byinc.cashapp.utils.convertDateViews
 import com.byinc.cashapp.utils.gone
 import com.byinc.cashapp.utils.showDialogLoadingLogo
 import com.byinc.cashapp.utils.visible
@@ -17,7 +19,6 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialDatePicker.INPUT_MODE_CALENDAR
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -68,20 +69,15 @@ class ListCashFragment : BaseFragment<FragmentListCashBinding>() {
             val timeZoneUTC: TimeZone = TimeZone.getDefault()
             // It will be negative, so that's the -1
             val offsetFromUTC: Int = timeZoneUTC.getOffset(Date().time) * -1
-
-            val simpleFormatFirst = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val dateFirst = Date(it.first + offsetFromUTC)
-            val finaleDateFirst = simpleFormatFirst.format(dateFirst)
-
-            val sfSecond = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val dateSecond = Date(it.second + offsetFromUTC)
-            val finalDateSecond = sfSecond.format(dateSecond)
 
-            binding.tvSelectStartDate.text = finaleDateFirst
-            startDate = finaleDateFirst
+            binding.tvSelectStartDate.text = convertDateViews(dateFirst)
+            startDate = convertDate(dateFirst)
 
-            binding.tvSelectEndDate.text = finalDateSecond
-            endDate = finalDateSecond
+            binding.tvSelectEndDate.text = convertDateViews(dateSecond)
+            endDate = convertDate(dateSecond)
+
             getDataListByDate(startDate, endDate)
         }
         datePicker.addOnNegativeButtonClickListener { datePicker.dismiss() }
