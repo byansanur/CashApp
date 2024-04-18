@@ -31,4 +31,14 @@ data class CashEntity(
         date = this.date,
         time = this.time
     )
+
+    fun toListCashModel() = listOf(CashModel(
+        id = this.id,
+        source = this.source,
+        fromSource = this.fromSource,
+        amount = this.amount,
+        note = this.note,
+        date = this.date,
+        time = this.time
+    ))
 }

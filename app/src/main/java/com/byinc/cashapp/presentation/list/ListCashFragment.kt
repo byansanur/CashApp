@@ -2,12 +2,13 @@ package com.byinc.cashapp.presentation.list
 
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.byinc.cashapp.base.BaseFragment
 import com.byinc.cashapp.databinding.FragmentListCashBinding
+import com.byinc.cashapp.domain.model.CashModel
 import com.byinc.cashapp.utils.Resources
 import com.byinc.cashapp.utils.convertDate
 import com.byinc.cashapp.utils.convertDateViews
@@ -31,24 +32,47 @@ class ListCashFragment : BaseFragment<FragmentListCashBinding>() {
     private var startDate = ""
     private var endDate = ""
 
+    private lateinit var adapterListCashIn: AdapterListCashIn
+    private var mutableCashModel: MutableList<CashModel> = mutableListOf()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         listener()
-        getDataList()
+        getDataListByDate(startDate, endDate)
+    }
+
+    private fun initView() {
+        adapterListCashIn = AdapterListCashIn()
+
+        val date = Date(System.currentTimeMillis())
+        startDate = convertDate(date)
+        endDate = convertDate(date)
+
+        binding.apply {
+            tvSelectStartDate.text = convertDateViews(date)
+            tvSelectEndDate.text = convertDateViews(date)
+        }
     }
 
     private fun listener() {
         binding.apply {
             fabAddCash.setOnClickListener {
                 val nav = ListCashFragmentDirections
-                    .actionListCashFragmentToFormCashFragment(isEdit = false)
+                    .actionListCashFragmentToFormCashFragment(isEdit = false, idWantToEdit = null)
                 findNavController().navigate(nav)
             }
-            tvSelectStartDate.setOnClickListener { showDatePicker(true) }
+            tvSelectStartDate.setOnClickListener { showDatePicker() }
+
+            adapterListCashIn.setOnItemClickListener {
+                val nav = ListCashFragmentDirections
+                    .actionListCashFragmentToFormCashFragment(isEdit = true, idWantToEdit = it.id)
+                findNavController().navigate(nav)
+            }
         }
     }
 
-    private fun showDatePicker(isStart: Boolean) {
+    private fun showDatePicker() {
         val calendarEnd = Calendar.getInstance(Locale.getDefault())
         calendarEnd.add(Calendar.DATE, -1)
         val calendarStart = Calendar.getInstance(Locale.getDefault())
@@ -98,6 +122,13 @@ class ListCashFragment : BaseFragment<FragmentListCashBinding>() {
                         } else {
                             rvListCash.visible()
                             includedMsgLayout.root.gone()
+                            mutableCashModel.clear()
+                            for (i in 0 until it.data.size) {
+                                mutableCashModel.add(it.data[i])
+                                adapterListCashIn.submitList(mutableCashModel)
+                            }
+                            rvListCash.adapter = adapterListCashIn
+                            rvListCash.layoutManager = LinearLayoutManager(requireContext())
                         }
                     }
                 }
@@ -107,37 +138,6 @@ class ListCashFragment : BaseFragment<FragmentListCashBinding>() {
                         includedMsgLayout.root.visible()
                         includedMsgLayout.tvProblemInfo.text = it.message
                     }
-                }
-            }
-        }
-    }
-
-    private fun getDataList() {
-        viewModelList.getAllListCash().observe(viewLifecycleOwner) {
-            when(it) {
-                is Resources.Loading -> {
-                    Log.e("TAG", "onViewCreated: loading")
-                    showDialogLoadingLogo(requireContext(), layoutInflater)
-                }
-                is Resources.Success -> {
-                    Log.e("TAG", "onViewCreated: success: ${it.data}")
-                    binding.apply {
-                        if (it.data.isNullOrEmpty()) {
-                            rvListCash.gone()
-                            includedMsgLayout.root.visible()
-                        } else {
-                            rvListCash.visible()
-                            includedMsgLayout.root.gone()
-                        }
-                    }
-                }
-                is Resources.Error -> {
-                    binding.apply {
-                        rvListCash.gone()
-                        includedMsgLayout.root.visible()
-                        includedMsgLayout.tvProblemInfo.text = it.message
-                    }
-                    Log.e("TAG", "onViewCreated: error: ${it.message}")
                 }
             }
         }

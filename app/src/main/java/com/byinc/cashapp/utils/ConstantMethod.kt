@@ -15,6 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.regex.Pattern
@@ -78,6 +79,20 @@ fun isAlpha(name: String): Boolean {
 fun convertDate(date: Date) : String {
     val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return simpleFormat.format(date)
+}
+
+fun convertDateTimeViews(dateTime: String) : String {
+    val defaultFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val convertDate = SimpleDateFormat("EE, MMM dd - HH:mm", Locale.getDefault())
+    var oriDate = Calendar.getInstance().time
+    try {
+        defaultFormat.parse(dateTime)?.let {
+            oriDate = it
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return convertDate.format(oriDate)
 }
 
 fun convertRp(value: Int): String {

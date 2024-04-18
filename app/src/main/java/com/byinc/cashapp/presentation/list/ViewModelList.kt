@@ -43,9 +43,7 @@ class ViewModelList @Inject constructor(
             if (cashModel.isNullOrEmpty()) {
                 output.postValue(Resources.Error("No Data Found!"))
             } else {
-                cashModel.forEach {
-                    output.postValue(Resources.Success(listOf(it.toCashModel())))
-                }
+                output.postValue(Resources.Success(cashModel))
             }
         }
         return output

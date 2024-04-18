@@ -23,5 +23,9 @@
             android:name="isEdit"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="idWantToEdit"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>
