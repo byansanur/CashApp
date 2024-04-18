@@ -34,5 +34,22 @@ class ViewModelList @Inject constructor(
         return output
     }
 
+    fun getAllListCashByDate(startDate: String, endDate: String) : LiveData<Resources<List<CashModel>>> {
+        val output = MutableLiveData<Resources<List<CashModel>>>()
+        viewModelScope.launch {
+            output.postValue(Resources.Loading())
+            delay(2000)
+            val cashModel = domainRepository.getAllCashInByDate(startDate, endDate)
+            if (cashModel.isNullOrEmpty()) {
+                output.postValue(Resources.Error("No Data Found!"))
+            } else {
+                cashModel.forEach {
+                    output.postValue(Resources.Success(listOf(it.toCashModel())))
+                }
+            }
+        }
+        return output
+    }
+
 
 }
