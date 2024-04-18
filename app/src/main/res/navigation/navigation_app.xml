@@ -9,7 +9,11 @@
         android:id="@+id/listCashFragment"
         android:name="com.byinc.cashapp.presentation.list.ListCashFragment"
         android:label="fragment_list_cash"
-        tools:layout="@layout/fragment_list_cash" />
+        tools:layout="@layout/fragment_list_cash" >
+        <action
+            android:id="@+id/action_listCashFragment_to_formCashFragment"
+            app:destination="@id/formCashFragment" />
+    </fragment>
     <fragment
         android:id="@+id/formCashFragment"
         android:name="com.byinc.cashapp.presentation.form.FormCashFragment"
