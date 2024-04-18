@@ -18,5 +18,10 @@
         android:id="@+id/formCashFragment"
         android:name="com.byinc.cashapp.presentation.form.FormCashFragment"
         android:label="fragment_form_cash"
-        tools:layout="@layout/fragment_form_cash" />
+        tools:layout="@layout/fragment_form_cash" >
+        <argument
+            android:name="isEdit"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
 </navigation>

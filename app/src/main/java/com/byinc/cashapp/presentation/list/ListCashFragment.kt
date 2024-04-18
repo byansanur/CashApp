@@ -39,11 +39,11 @@ class ListCashFragment : BaseFragment<FragmentListCashBinding>() {
     private fun listener() {
         binding.apply {
             fabAddCash.setOnClickListener {
-                val nav = ListCashFragmentDirections.actionListCashFragmentToFormCashFragment()
+                val nav = ListCashFragmentDirections
+                    .actionListCashFragmentToFormCashFragment(isEdit = false)
                 findNavController().navigate(nav)
             }
             tvSelectStartDate.setOnClickListener { showDatePicker(true) }
-//            tvSelectEndDate.setOnClickListener { showDatePicker(false) }
         }
     }
 
