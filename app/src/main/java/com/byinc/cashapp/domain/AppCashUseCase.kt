@@ -14,8 +14,8 @@ class AddCashInUseCase @Inject constructor(
 class GetAllCashByDateUseCase @Inject constructor(
     private val allCashByDate: DataRepository
 ) {
-    suspend operator fun invoke(date: String) =
-        allCashByDate.getAllCashInByDate(date)
+    suspend operator fun invoke(startDate: String, endDate: String) =
+        allCashByDate.getAllCashInByDate(startDate, endDate)
 }
 
 class GetAllCashUseCase @Inject constructor(

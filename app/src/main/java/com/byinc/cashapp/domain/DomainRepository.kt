@@ -19,8 +19,8 @@ class DomainRepository @Inject constructor(
     suspend fun getAllCashIn() =
         getAllCashUseCase.invoke()
 
-    suspend fun getAllCashInByDate(date: String) =
-        getAllCashByDateUseCase.invoke(date)
+    suspend fun getAllCashInByDate(startDate: String, endDate: String) =
+        getAllCashByDateUseCase.invoke(startDate, endDate)
 
     suspend fun updateCashIn(cashModel: CashModel) =
         updateCashUseCase.invoke(cashModel)
