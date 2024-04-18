@@ -23,6 +23,9 @@ interface CashEntityDao {
     @Query("SELECT * FROM cash_entity")
     suspend fun getAllCash() : List<CashEntity>?
 
+    @Query("SELECT * FROM cash_entity WHERE id = :id")
+    suspend fun getCashById(id: String) : CashEntity?
+
     @Update
     suspend fun updateCashIn(cash: CashEntity)
 

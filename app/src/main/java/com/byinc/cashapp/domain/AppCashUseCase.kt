@@ -1,7 +1,7 @@
 package com.byinc.cashapp.domain
 
-import com.byinc.cashapp.domain.model.CashModel
 import com.byinc.cashapp.data.repository.DataRepository
+import com.byinc.cashapp.domain.model.CashModel
 import javax.inject.Inject
 
 class AddCashInUseCase @Inject constructor(
@@ -16,6 +16,13 @@ class GetAllCashByDateUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(startDate: String, endDate: String) =
         allCashByDate.getAllCashInByDate(startDate, endDate)
+}
+
+class GetCashById @Inject constructor(
+    private val cashById: DataRepository
+) {
+    suspend operator fun invoke(id: String) =
+        cashById.getCashById(id)
 }
 
 class GetAllCashUseCase @Inject constructor(

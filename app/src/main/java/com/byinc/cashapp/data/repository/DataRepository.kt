@@ -11,6 +11,8 @@ class DataRepository @Inject constructor(private val cashEntityDao: CashEntityDa
 
     suspend fun getAllCashInByDate(startDate: String, endDate: String) = cashEntityDao.getAllCashByDate(startDate, endDate)
 
+    suspend fun getCashById(id: String) = cashEntityDao.getCashById(id)
+
     suspend fun insertCashIn(cashEntity: CashEntity) = cashEntityDao.insertCash(cashEntity)
 
     suspend fun updateCashIn(cashEntity: CashEntity) = cashEntityDao.updateCashIn(cashEntity)
