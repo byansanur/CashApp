@@ -6,13 +6,71 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.list.ListCashFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDatePeriod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@drawable/bg_periode"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvSelectStartDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_stroke_periode"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="12dp"
+            android:text="HH/BB/TTTT"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvSelectEndDate"
+            app:layout_constraintStart_toStartOf="@id/tvStart"
+            app:layout_constraintTop_toBottomOf="@id/tvStart" />
+
+        <TextView
+            android:id="@+id/tvEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tvSelectEndDate"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvSelectEndDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="HH/BB/TTTT"
+            android:background="@drawable/bg_stroke_periode"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="10dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEnd"
+            app:layout_constraintStart_toEndOf="@id/tvSelectStartDate"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListCash"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clDatePeriod"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <include
@@ -29,11 +87,10 @@
         android:id="@+id/fabAddCash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_margin="16dp"
         app:icon="@drawable/round_attach_money_24"
         android:text="@string/add_cash"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
