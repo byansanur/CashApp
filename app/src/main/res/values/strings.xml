@@ -4,4 +4,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_cash">Add Cash</string>
     <string name="image_problem_info">image problem info</string>
+
+    <string-array name="source">
+        <item>Kas</item>
+        <item>BCA</item>
+        <item>BNI</item>
+        <item>BRI</item>
+        <item>Mandiri</item>
+    </string-array>
 </resources>
