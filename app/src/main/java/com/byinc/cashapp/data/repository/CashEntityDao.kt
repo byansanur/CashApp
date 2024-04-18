@@ -17,11 +17,11 @@ interface CashEntityDao {
     @Upsert
     suspend fun upsertCash(cash: CashEntity)
 
-    @Query("SELECT * FROM cash_entity WHERE date = :givenDate")
-    suspend fun getAllCashByDate(givenDate: String) : List<CashEntity>
+    @Query("SELECT * FROM cash_entity WHERE date BETWEEN :startDate AND :endDate")
+    suspend fun getAllCashByDate(startDate: String, endDate: String) : List<CashEntity>?
 
     @Query("SELECT * FROM cash_entity")
-    suspend fun getAllCash() : List<CashEntity>
+    suspend fun getAllCash() : List<CashEntity>?
 
     @Update
     suspend fun updateCashIn(cash: CashEntity)
