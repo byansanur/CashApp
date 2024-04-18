@@ -4,7 +4,7 @@ import com.byinc.cashapp.data.entity.CashEntity
 
 data class CashModel(
     var id: String,
-    var name: String,
+    var source: String,
     var fromSource: String,
     var amount: String,
     var note: String,
@@ -13,7 +13,7 @@ data class CashModel(
 ) {
     fun toCashEntity() = CashEntity(
         id = this.id,
-        name = this.name,
+        source = this.source,
         fromSource = this.fromSource,
         amount = this.amount,
         note = this.note,

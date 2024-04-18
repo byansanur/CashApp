@@ -9,8 +9,8 @@ import com.byinc.cashapp.domain.model.CashModel
 data class CashEntity(
     @PrimaryKey @ColumnInfo(name = "id")
     val id: String,
-    @ColumnInfo(name = "name")
-    val name: String,
+    @ColumnInfo(name = "source")
+    val source: String,
     @ColumnInfo(name = "fromSource")
     val fromSource: String,
     @ColumnInfo(name = "amount")
@@ -24,7 +24,7 @@ data class CashEntity(
 ) {
     fun toCashModel() = CashModel(
         id = this.id,
-        name = this.name,
+        source = this.source,
         fromSource = this.fromSource,
         amount = this.amount,
         note = this.note,
