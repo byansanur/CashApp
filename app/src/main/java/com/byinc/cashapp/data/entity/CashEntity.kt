@@ -3,6 +3,7 @@ package com.byinc.cashapp.data.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.byinc.cashapp.domain.model.CashModel
 
 @Entity(tableName = "cash_entity")
 data class CashEntity(
@@ -20,4 +21,14 @@ data class CashEntity(
     val date: String,
     @ColumnInfo(name = "time")
     val time: String
-)
+) {
+    fun toCashModel() = CashModel(
+        id = this.id,
+        name = this.name,
+        fromSource = this.fromSource,
+        amount = this.amount,
+        note = this.note,
+        date = this.date,
+        time = this.time
+    )
+}
