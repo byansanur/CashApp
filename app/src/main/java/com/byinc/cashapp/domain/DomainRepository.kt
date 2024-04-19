@@ -10,9 +10,8 @@ class DomainRepository @Inject constructor(
     private val getAllCashUseCase: GetAllCashUseCase,
     private val getAllCashByDateUseCase: GetAllCashByDateUseCase,
     private val getCashById: GetCashById,
-    private val updateCashUseCase: UpdateCashUseCase,
-    private val deleteAllCashUseCase: DeleteAllCashUseCase,
-    private val deleteCashByIdCase: DeleteCashByIdCase
+    private val deleteCashByIdCase: DeleteCashByIdCase,
+    private val updateCashInById: UpdateCashInById
 ){
     suspend fun insertCashIn(cashModel: CashModel) =
         addCashInUseCase.invoke(cashModel)
@@ -26,12 +25,10 @@ class DomainRepository @Inject constructor(
     suspend fun getCashById(id: String) =
         getCashById.invoke(id)
 
-    suspend fun updateCashIn(cashModel: CashModel) =
-        updateCashUseCase.invoke(cashModel)
 
-    suspend fun deleteAllCashIn() =
-        deleteAllCashUseCase.invoke()
-
-    suspend fun deleteCashById(id: Int) =
+    suspend fun deleteCashById(id: String) =
         deleteCashByIdCase.invoke(id)
+
+    suspend fun updateCashInById(id: String, source: String, fromSource: String, amount: String, note: String, date: String, time: String) =
+        updateCashInById.invoke(id, source, fromSource, amount, note, date, time)
 }

@@ -27,8 +27,8 @@ class GetAllCashByDateUseCase @Inject constructor(
 class GetCashById @Inject constructor(
     private val cashById: DataRepository
 ) {
-    suspend operator fun invoke(id: String) =
-        cashById.getCashById(id)
+    suspend operator fun invoke(id: String) : CashModel? =
+        cashById.getCashById(id)?.toCashModel()
 }
 
 class GetAllCashUseCase @Inject constructor(
@@ -38,23 +38,16 @@ class GetAllCashUseCase @Inject constructor(
         allCash.getAllCashIn()
 }
 
-class UpdateCashUseCase @Inject constructor(
-    private val updateCash: DataRepository
+class UpdateCashInById @Inject constructor(
+    private val updateCashInById: DataRepository
 ) {
-    suspend operator fun invoke(cashModel: CashModel) =
-        updateCash.updateCashIn(cashModel.toCashEntity())
-}
-
-class DeleteAllCashUseCase @Inject constructor(
-    private val deleteCash: DataRepository
-) {
-    suspend operator fun invoke() =
-        deleteCash.deleteAllCashIn()
+    suspend operator fun invoke(id: String, source: String, fromSource: String, amount: String, note: String, date: String, time: String) =
+        updateCashInById.updateCashInById(id, source, fromSource, amount, note, date, time)
 }
 
 class DeleteCashByIdCase @Inject constructor(
     private val deleteCashInById: DataRepository
 ) {
-    suspend operator fun invoke(id: Int) =
+    suspend operator fun invoke(id: String) =
         deleteCashInById.deleteCashInById(id)
 }

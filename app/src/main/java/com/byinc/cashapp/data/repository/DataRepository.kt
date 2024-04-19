@@ -15,9 +15,8 @@ class DataRepository @Inject constructor(private val cashEntityDao: CashEntityDa
 
     suspend fun insertCashIn(cashEntity: CashEntity) = cashEntityDao.insertCash(cashEntity)
 
-    suspend fun updateCashIn(cashEntity: CashEntity) = cashEntityDao.updateCashIn(cashEntity)
+    suspend fun updateCashInById(id: String, source: String, fromSource: String, amount: String, note: String, date: String, time: String) =
+        cashEntityDao.updateCashIn(id, source, fromSource, amount, note, date, time)
 
-    suspend fun deleteAllCashIn() = cashEntityDao.deleteAllCashIn()
-
-    suspend fun deleteCashInById(id: Int) = cashEntityDao.deleteCashInById(id)
+    suspend fun deleteCashInById(id: String) = cashEntityDao.deleteCashInById(id)
 }
