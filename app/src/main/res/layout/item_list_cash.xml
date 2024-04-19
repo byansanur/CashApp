@@ -14,7 +14,7 @@
         android:id="@+id/tvKasSource"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="KAS"
+        android:text="@string/kas"
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="invisible"
@@ -30,7 +30,7 @@
         android:visibility="visible"
         android:background="@drawable/logo_mandiri_bank_small"
         android:backgroundTint="@color/white_color"
-        android:contentDescription="image source"
+        android:contentDescription="@string/image_source"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

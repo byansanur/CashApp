@@ -4,12 +4,20 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_cash">Add Cash</string>
     <string name="image_problem_info">image problem info</string>
-
-    <string-array name="source">
-        <item>Kas</item>
-        <item>BCA</item>
-        <item>BNI</item>
-        <item>BRI</item>
-        <item>Mandiri</item>
-    </string-array>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="from">From</string>
+    <string name="source">Source</string>
+    <string name="kas">Kas</string>
+    <string name="bca">BCA</string>
+    <string name="bni">BNI</string>
+    <string name="bri">BRI</string>
+    <string name="mandiri">Mandiri</string>
+    <string name="amount">Amount</string>
+    <string name="notes">Notes</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="please_wait">Please Wait…</string>
+    <string name="logo_loading">logo loading</string>
+    <string name="image_source">image source</string>
 </resources>

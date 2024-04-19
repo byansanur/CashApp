@@ -7,7 +7,6 @@ import javax.inject.Singleton
 @Singleton
 class DomainRepository @Inject constructor(
     private val addCashInUseCase: AddCashInUseCase,
-    private val getAllCashUseCase: GetAllCashUseCase,
     private val getAllCashByDateUseCase: GetAllCashByDateUseCase,
     private val getCashById: GetCashById,
     private val deleteCashByIdCase: DeleteCashByIdCase,
@@ -15,9 +14,6 @@ class DomainRepository @Inject constructor(
 ){
     suspend fun insertCashIn(cashModel: CashModel) =
         addCashInUseCase.invoke(cashModel)
-
-    suspend fun getAllCashIn() =
-        getAllCashUseCase.invoke()
 
     suspend fun getAllCashInByDate(startDate: String, endDate: String) =
         getAllCashByDateUseCase.invoke(startDate, endDate)

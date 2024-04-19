@@ -17,30 +17,13 @@ class ViewModelList @Inject constructor(
     private val domainRepository: DomainRepository
 ) : ViewModel() {
 
-    fun getAllListCash() : LiveData<Resources<List<CashModel>>> {
-        val output = MutableLiveData<Resources<List<CashModel>>>()
-        viewModelScope.launch {
-            output.postValue(Resources.Loading())
-            delay(2000)
-            val cashModel = domainRepository.getAllCashIn()
-            if (cashModel.isNullOrEmpty()) {
-                output.postValue(Resources.Error("No Data Found!"))
-            } else {
-                cashModel.forEach {
-                    output.postValue(Resources.Success(listOf(it.toCashModel())))
-                }
-            }
-        }
-        return output
-    }
-
     fun getAllListCashByDate(startDate: String, endDate: String) : LiveData<Resources<List<CashModel>>> {
         val output = MutableLiveData<Resources<List<CashModel>>>()
         viewModelScope.launch {
             output.postValue(Resources.Loading())
             delay(2000)
             val cashModel = domainRepository.getAllCashInByDate(startDate, endDate)
-            if (cashModel.isNullOrEmpty()) {
+            if (cashModel.isEmpty()) {
                 output.postValue(Resources.Error("No Data Found!"))
             } else {
                 output.postValue(Resources.Success(cashModel))

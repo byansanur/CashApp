@@ -14,7 +14,7 @@ class AddCashInUseCase @Inject constructor(
 class GetAllCashByDateUseCase @Inject constructor(
     private val allCashByDate: DataRepository
 ) {
-    suspend operator fun invoke(startDate: String, endDate: String) : List<CashModel>? {
+    suspend operator fun invoke(startDate: String, endDate: String) : List<CashModel> {
         val query = allCashByDate.getAllCashInByDate(startDate, endDate)
         val list = mutableListOf<CashModel>()
         query?.forEach {
@@ -29,13 +29,6 @@ class GetCashById @Inject constructor(
 ) {
     suspend operator fun invoke(id: String) : CashModel? =
         cashById.getCashById(id)?.toCashModel()
-}
-
-class GetAllCashUseCase @Inject constructor(
-    private val allCash: DataRepository
-) {
-    suspend operator fun invoke() =
-        allCash.getAllCashIn()
 }
 
 class UpdateCashInById @Inject constructor(

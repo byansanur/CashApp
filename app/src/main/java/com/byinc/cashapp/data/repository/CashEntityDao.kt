@@ -15,9 +15,6 @@ interface CashEntityDao {
     @Query("SELECT * FROM cash_entity WHERE date BETWEEN :startDate AND :endDate")
     suspend fun getAllCashByDate(startDate: String, endDate: String) : List<CashEntity>?
 
-    @Query("SELECT * FROM cash_entity")
-    suspend fun getAllCash() : List<CashEntity>?
-
     @Query("SELECT * FROM cash_entity WHERE id = :id")
     suspend fun getCashById(id: String) : CashEntity?
 
@@ -29,7 +26,7 @@ interface CashEntityDao {
             "date = :date, " +
             "time = :time " +
             "WHERE id =:id")
-    suspend fun updateCashIn(id: String, source: String, fromSource: String, amount: String, note: String, date: String, time: String)
+    suspend fun updateCashInById(id: String, source: String, fromSource: String, amount: String, note: String, date: String, time: String)
 
     @Query("DELETE FROM cash_entity WHERE id=:cashId")
     suspend fun deleteCashInById(cashId: String)

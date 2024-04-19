@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.regex.Pattern
 
 @OptIn(DelicateCoroutinesApi::class)
 fun showDialogLoadingLogo(context: Context, layoutInflater: LayoutInflater) {
@@ -61,8 +60,7 @@ fun convertTime(date: Date) : String {
 }
 
 fun pad(input: Int): String {
-    var str: String? = ""
-    str = if (input > 10) {
+    val str: String = if (input > 10) {
         input.toString()
     } else {
         "0$input"
@@ -70,15 +68,37 @@ fun pad(input: Int): String {
     return str
 }
 
-fun isAlpha(name: String): Boolean {
-    val p = Pattern.compile("[a-zA-Z]")
-    val m = p.matcher(name)
-    return m.find()
-}
-
 fun convertDate(date: Date) : String {
     val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return simpleFormat.format(date)
+}
+
+fun convertTimeViews2(dateTime: String) : String {
+    val defaultFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    val convertDate = SimpleDateFormat("hh:mm", Locale.getDefault())
+    var oriDate = Calendar.getInstance().time
+    try {
+        defaultFormat.parse(dateTime)?.let {
+            oriDate = it
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return convertDate.format(oriDate)
+}
+
+fun convertDateViews2(dateTime: String) : String {
+    val defaultFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val convertDate = SimpleDateFormat("EE, MMM dd", Locale.getDefault())
+    var oriDate = Calendar.getInstance().time
+    try {
+        defaultFormat.parse(dateTime)?.let {
+            oriDate = it
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return convertDate.format(oriDate)
 }
 
 fun convertDateTimeViews(dateTime: String) : String {

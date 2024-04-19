@@ -46,7 +46,7 @@
                     android:gravity="center_vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="15dp"
-                    android:text="Date"
+                    android:text="@string/date"
                     android:textStyle="normal"
                     android:drawablePadding="10dp"
                     app:drawableStartCompat="@drawable/round_calendar_month_24" />
@@ -70,8 +70,8 @@
                     android:gravity="center_vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="15dp"
-                    android:text="Time"
-                    android:textStyle="bold"
+                    android:text="@string/time"
+                    android:textStyle="normal"
                     android:drawablePadding="10dp"
                     app:drawableStartCompat="@drawable/round_access_time_24" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_stroke_periode"
-                    android:hint="From"
+                    android:hint="@string/from"
                     android:inputType="textCapSentences"
                     android:singleLine="true"
                     android:maxLength="20"/>
@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
-                android:text="Source"
+                android:text="@string/source"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/tilFrom"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -122,35 +122,35 @@
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Kas"/>
+                    android:text="@string/kas"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipBca"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BCA"/>
+                    android:text="@string/bca"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipBni"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BNI"/>
+                    android:text="@string/bni"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipBri"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BRI"/>
+                    android:text="@string/bri"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipMandiri"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mandiri"/>
+                    android:text="@string/mandiri"/>
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -167,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_stroke_periode"
-                    android:hint="Amount"
+                    android:hint="@string/amount"
                     android:maxLength="11"
                     android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -186,7 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_stroke_periode"
-                    android:hint="Notes"
+                    android:hint="@string/notes"
                     android:inputType="textCapSentences"
                     android:singleLine="true"
                     android:maxLength="20"/>
@@ -201,18 +201,22 @@
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/save"
         android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete"
+        android:text="@string/delete"
         android:layout_margin="16dp"
         android:visibility="gone"
         android:backgroundTint="@android:color/holo_red_light"
-        app:layout_constraintBottom_toTopOf="@id/btnSave" />
+        app:layout_constraintBottom_toTopOf="@id/btnSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

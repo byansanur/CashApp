@@ -1,5 +1,6 @@
 package com.byinc.cashapp.presentation.list
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class AdapterListCashIn: RecyclerView.Adapter<AdapterListCashIn.Holder>() {
 
     private var list: MutableList<CashModel> = mutableListOf()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(input: MutableList<CashModel>) {
         list = input
         notifyDataSetChanged()
