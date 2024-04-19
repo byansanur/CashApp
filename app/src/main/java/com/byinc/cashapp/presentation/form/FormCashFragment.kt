@@ -1,17 +1,16 @@
 package com.byinc.cashapp.presentation.form
 
-import android.annotation.SuppressLint
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat.is24HourFormat
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.children
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.byinc.cashapp.base.BaseFragment
 import com.byinc.cashapp.databinding.FragmentFormCashBinding
@@ -19,11 +18,15 @@ import com.byinc.cashapp.domain.model.CashModel
 import com.byinc.cashapp.utils.Resources
 import com.byinc.cashapp.utils.convertDate
 import com.byinc.cashapp.utils.convertDateViews
+import com.byinc.cashapp.utils.convertDateViews2
 import com.byinc.cashapp.utils.convertRp
 import com.byinc.cashapp.utils.convertTime
 import com.byinc.cashapp.utils.convertTimeViews
+import com.byinc.cashapp.utils.convertTimeViews2
+import com.byinc.cashapp.utils.gone
 import com.byinc.cashapp.utils.pad
 import com.byinc.cashapp.utils.showDialogLoadingLogo
+import com.byinc.cashapp.utils.visible
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -52,6 +55,8 @@ class FormCashFragment : BaseFragment<FragmentFormCashBinding>() {
     private var amount = ""
     private var note = ""
 
+    private var idCash = ""
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,6 +66,8 @@ class FormCashFragment : BaseFragment<FragmentFormCashBinding>() {
 
     private fun initData() {
         isEdit = args.isEdit
+        idCash = args.idWantToEdit.toString()
+
         binding.apply {
             if (!isEdit) {
                 val date = Date(System.currentTimeMillis())
@@ -69,11 +76,20 @@ class FormCashFragment : BaseFragment<FragmentFormCashBinding>() {
                 dateTransaction = convertDate(date)
                 timeTransaction = convertTime(date)
 
+                tvSource.visible()
+                cgSource.visible()
+                btnDelete.gone()
+
+            } else {
+                tvSource.gone()
+                cgSource.gone()
+                btnDelete.visible()
+                if (idCash.isNotEmpty())
+                    getCashById(idCash)
             }
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun listener() {
         binding.apply {
 
@@ -84,14 +100,12 @@ class FormCashFragment : BaseFragment<FragmentFormCashBinding>() {
                 if (!it.isNullOrEmpty()) {
                     from = it.toString()
                 }
-                Log.e("TAG", "listener: from: $from", )
             }
 
             tieNote.doAfterTextChanged {
                 if (!it.isNullOrEmpty()) {
                     note = it.toString()
                 }
-                Log.e("TAG", "listener: note: $note", )
             }
 
             tieAmount.addTextChangedListener(object : TextWatcher {
@@ -107,7 +121,6 @@ class FormCashFragment : BaseFragment<FragmentFormCashBinding>() {
                             if (str.startsWith("0")) tieAmount.setText("")
                             else {
                                 amount = tieAmount.text.toString()
-                                Log.e("TAG", "afterTextChanged: amount: $amount", )
                                 tieAmount.setText(
                                     convertRp(str.toInt()).replace("Rp","")
                                 )
@@ -130,12 +143,121 @@ class FormCashFragment : BaseFragment<FragmentFormCashBinding>() {
 
             })
 
+            btnDelete.setOnClickListener { deleteCashById() }
+
             btnSave.setOnClickListener {
                 if (!isEdit) {
                     insertData()
                 } else updateDataById()
             }
 
+        }
+    }
+
+    private fun getCashById(idCash: String) {
+        viewModelForm.getCashById(idCash).observe(viewLifecycleOwner) {
+            when(it) {
+                is Resources.Loading -> showDialogLoadingLogo(requireContext(), layoutInflater)
+                is Resources.Success -> {
+                    val cashModel = it.data
+                    if (cashModel != null) {
+                        binding.apply {
+                            tieFrom.setText(cashModel.fromSource)
+                            tieAmount.setText(convertRp(cashModel.amount.toInt()).replace("Rp",""))
+                            tieNote.setText(cashModel.note)
+                            tieDate.text = convertDateViews2(cashModel.date)
+                            tieTime.text = convertTimeViews2(cashModel.time)
+                            dateTransaction = cashModel.date
+                            timeTransaction = cashModel.time
+                            source = cashModel.source
+                        }
+                    }
+                }
+                is Resources.Error -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                }
+            }
+        }
+    }
+
+    private fun insertData() {
+        source = selectionSourceChip()
+        if (validInput()) {
+            val cashModel = CashModel(
+                id = UUID.randomUUID().toString(),
+                source = source,
+                fromSource = from,
+                amount = amount.replace(".",""),
+                note = note,
+                date = dateTransaction,
+                time = timeTransaction
+            )
+            viewModelForm.insertData(cashModel).observe(viewLifecycleOwner) {
+                when (it) {
+                    is Resources.Loading -> showDialogLoadingLogo(requireContext(), layoutInflater)
+                    is Resources.Success -> {
+                        if (it.data == true) {
+                            Toast.makeText(requireContext(), "Nice to your added cash!", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }
+                    }
+                    is Resources.Error -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), "Check your input", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updateDataById() {
+        if (validInput()) {
+            val cashModel = CashModel(
+                id = idCash,
+                source = source,
+                fromSource = from,
+                amount = amount.replace(".", ""),
+                note = note,
+                date = dateTransaction,
+                time = timeTransaction
+            )
+            viewModelForm.upsertCash(
+                cashModel
+            ).observe(viewLifecycleOwner) {
+                when (it) {
+                    is Resources.Loading -> showDialogLoadingLogo(requireContext(), layoutInflater)
+                    is Resources.Success -> {
+                        if (it.data == true) {
+                            Toast.makeText(requireContext(), "Nice to your data has been change!", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }
+                    }
+                    is Resources.Error -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), "Check your input", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun deleteCashById() {
+        viewModelForm.deleteById(idCash).observe(viewLifecycleOwner) {
+            when (it) {
+                is Resources.Loading -> showDialogLoadingLogo(requireContext(), layoutInflater)
+                is Resources.Success -> {
+                    if (it.data == true) {
+                        Toast.makeText(requireContext(), "Your cash has been deleted!", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }
+                }
+                is Resources.Error -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -188,40 +310,6 @@ class FormCashFragment : BaseFragment<FragmentFormCashBinding>() {
         }
         if (!datePicker.isAdded)
             datePicker.show(parentFragmentManager, "DATE_TRANSACTION")
-    }
-
-    private fun updateDataById() {
-
-    }
-
-    private fun insertData() {
-        source = selectionSourceChip()
-        if (validInput()) {
-            val cashModel = CashModel(
-                id = UUID.randomUUID().toString(),
-                source = source,
-                fromSource = from,
-                amount = amount.replace(".",""),
-                note = note,
-                date = dateTransaction,
-                time = timeTransaction
-            )
-            viewModelForm.insertData(cashModel).observe(viewLifecycleOwner) {
-                when (it) {
-                    is Resources.Loading -> showDialogLoadingLogo(requireContext(), layoutInflater)
-                    is Resources.Success -> {
-                        if (it.data == true) {
-                            Toast.makeText(requireContext(), "Nice to your added cash!", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    is Resources.Error -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        } else {
-            Toast.makeText(requireContext(), "Check your input", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun validInput() : Boolean {
