@@ -11,6 +11,18 @@ android {
     namespace = "com.byinc.cashapp"
     compileSdk = 34
 
+    signingConfigs {
+        create("prodKey") {
+            keyAlias = "key"
+            keyPassword = "password"
+            storePassword = "password"
+            storeFile = file("cashappkey-jks")
+            enableV1Signing = false
+            enableV2Signing = true
+            enableV3Signing = true
+        }
+    }
+
     defaultConfig {
         applicationId = "com.byinc.cashapp"
         minSdk = 24
@@ -19,6 +31,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+
+        ndk {
+            version = "26.1.10909125"
+            debugSymbolLevel = "SYMBOL_TABLE"
+        }
+
+        android.defaultConfig.ndk.debugSymbolLevel = "SYMBOL_TABLE"
     }
 
     flavorDimensions.add("cash")
@@ -40,20 +61,12 @@ android {
         }
     }
 
-    signingConfigs {
-        create("prodKey") {
-            enableV1Signing = false
-            enableV2Signing = true
-            enableV3Signing = true
-        }
-    }
-
     buildTypes {
         release {
             signingConfig = signingConfigs["prodKey"]
-            isDebuggable = false
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -66,15 +79,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
     }
+    ndkVersion = "26.1.10909125"
 }
 
 dependencies {
@@ -83,8 +97,9 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.13.0-alpha01")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation("androidx.fragment:fragment-ktx:1.6.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

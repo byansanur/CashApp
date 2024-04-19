@@ -14,8 +14,24 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
+-renamesourcefileattribute SourceFile
+
+-keep class * extends androidx.fragment.app.Fragment
+-keep class androidx.fragment.app.FragmentContainerView$AtLeastOneTaskFragmentRequest { *; }
+-keepnames class androidx.navigation.fragment.NavHostFragment
+-keep class androidx.fragment.app.FragmentContainerView { *; }
+
+-keep class com.byinc.cashapp.base.BaseFragment {
+    public <init>();
+    public <methods>;
+    protected <methods>;
+    public <fields>;
+    protected <fields>;
+}
+
+-keep, allowobfuscation class com.byinc.cashapp.presentation.form.FormCashFragment.**
+-keep, allowobfuscation class com.byinc.cashapp.presentation.list.ListCashFragment.**
