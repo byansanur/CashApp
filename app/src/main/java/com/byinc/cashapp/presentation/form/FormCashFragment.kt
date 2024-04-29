@@ -36,6 +36,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -267,15 +268,16 @@ class FormCashFragment : BaseFragment<FragmentFormCashBinding>() {
         val timePicker = MaterialTimePicker.Builder()
             .setTimeFormat(clockFormat)
             .setHour(12)
-            .setMinute(0)
             .setInputMode(INPUT_MODE_CLOCK)
             .setTitleText("Select transaction time")
             .build()
         timePicker.addOnPositiveButtonClickListener {
             val hour = timePicker.hour
             val minute = timePicker.minute
-            timeTransaction = "${pad(hour)}:${pad(minute)}"
-            binding.tieTime.text = timeTransaction
+            val secFormat = SimpleDateFormat("ss", Locale.getDefault())
+            val second = secFormat.format(Date(System.currentTimeMillis()))
+            timeTransaction = "${pad(hour)}:${pad(minute)}:$second"
+            binding.tieTime.text = StringBuilder("${pad(hour)}:${pad(minute)}")
         }
         if (!timePicker.isAdded)
             timePicker.show(parentFragmentManager, "TIME_TRANSACTION")

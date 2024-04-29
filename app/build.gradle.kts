@@ -64,7 +64,7 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs["prodKey"]
-            isDebuggable = true
+            isDebuggable = false
             isMinifyEnabled = false
             isShrinkResources = false
             proguardFiles(
